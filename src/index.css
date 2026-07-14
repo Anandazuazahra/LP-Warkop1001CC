@@ -928,3 +928,86 @@ footer p{color:var(--ink-soft);font-size:0.82rem;font-family:'Space Mono',monosp
   animation: steam 2s ease-in-out infinite 1s;
 }
 
+/* TACTILE & TOUCH RESPONSIVENESS POLISH */
+button, a, input, select, textarea, .sig-card, .art-card, .brand, .polaroid-card {
+  -webkit-tap-highlight-color: transparent; /* Remove default gray tap highlight on mobile browsers */
+}
+
+/* Nav Brand tap feedback */
+.brand {
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.brand:active {
+  transform: scale(0.97);
+}
+
+.navlinks a {
+  display: inline-block;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.navlinks a:active {
+  transform: scale(0.94);
+  opacity: 0.85;
+}
+
+.nav-cta {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.nav-cta:active {
+  transform: translateY(2px) scale(0.97);
+  box-shadow: 0 1px 0 #8a531f;
+}
+
+/* Buttons click tactile response */
+.btn-primary {
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.15s ease;
+}
+.btn-primary:active {
+  transform: scale(0.96) translateY(2px);
+  box-shadow: 0 2px 0 #8a531f;
+}
+
+.btn-ghost {
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+.btn-ghost:active {
+  transform: scale(0.96);
+  background: rgba(245, 237, 225, 0.08);
+}
+
+/* Cards tap/press scale down */
+.sig-card:active {
+  transform: translateY(-2px) scale(0.98);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.art-card:active {
+  transform: translateY(-2px) scale(0.98);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.polaroid-card {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+}
+.polaroid-card:hover {
+  transform: rotate(-1deg) scale(1.02);
+  box-shadow: 0 30px 65px rgba(0,0,0,0.6);
+}
+.polaroid-card:active {
+  transform: rotate(0deg) scale(0.97);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+/* Form inputs visual scale on focus/active */
+.form-input {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+}
+.form-input:focus {
+  transform: scale(1.005);
+}
+.form-input:active {
+  transform: scale(0.995);
+}
