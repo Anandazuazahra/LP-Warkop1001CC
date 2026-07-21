@@ -4,11 +4,26 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Warkop 1001cc — Sistem Kasir & QR Order</title>
-    <meta name="description" content="Sistem Kasir Berbasis Web Warkop 1001cc menggabungkan kasir, pemesanan lewat QR di meja, dan layar dapur jadi satu alur — tanpa antre di kasir." />
+    <title>Warkop 1001cc — Rumah Bagi Setiap Cerita | Warkop 24 Jam</title>
+    <meta name="description" content="Warkop 1001cc adalah tempat nongkrong hangat 24 jam dengan Kopi Cakra pilihan, makanan favorit, dan ruang kolaborasi nyaman di Bojonggede, Kalisuren & Bomang." />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Space+Mono:wght@400;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+      // Automatically unregister any legacy POS PWA Service Workers and clear cache
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+          for(let registration of registrations) {
+            registration.unregister();
+          }
+        });
+      }
+      if ('caches' in window) {
+        caches.keys().then(function(names) {
+          for (let name of names) caches.delete(name);
+        });
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
