@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Coffee, 
-  MapPin, 
-  Clock, 
-  Phone, 
-  Sparkles, 
-  Wifi, 
-  Calendar, 
+import {
+  Coffee,
+  MapPin,
+  Clock,
+  Phone,
+  Sparkles,
+  Wifi,
+  Calendar,
   Compass,
   CheckCircle,
   AlertCircle,
@@ -58,7 +58,7 @@ export default function App() {
 
   // Contact / Reservation Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
-  
+
   // Toast State
   const [toasts, setToasts] = useState([]);
 
@@ -141,25 +141,7 @@ export default function App() {
         <div className="wrap">
           <div className="brand" style={{ cursor: 'pointer' }} onClick={(e) => handleNavClick('home', e)}>
             <img src={logoImg} alt="Warkop 1001cc Logo" style={{ width: '32px', height: '32px', objectFit: 'contain' }} />
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <span style={{ fontSize: '1.15rem' }}>Warkop 1001cc</span>
-                <span style={{
-                  fontSize: '0.68rem',
-                  color: '#15803D',
-                  fontWeight: '800',
-                  background: 'rgba(34, 197, 94, 0.15)',
-                  padding: '2px 8px',
-                  borderRadius: '12px',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '4px',
-                  fontFamily: 'var(--font-mono)'
-                }}>
-                  <span className="status-pulse-dot"></span> 24 JAM
-                </span>
-              </div>
-            </div>
+            <span style={{ fontSize: '1.15rem' }}>Warkop 1001cc</span>
           </div>
 
           {/* Desktop Navigation Links */}
@@ -217,7 +199,7 @@ export default function App() {
           </a>
 
           {/* Mobile Hamburger Menu Toggle Button */}
-          <button 
+          <button
             className="mobile-menu-toggle"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Buka Menu Navigasi"
@@ -297,7 +279,7 @@ export default function App() {
                     <div className="eyebrow">Warkop & Ruang Kolaborasi</div>
                     <h1>Tempat Nongkrong Hangat,<br className="hero-br" /><em>Kopi Terbaik</em> Setiap Saat.</h1>
                     <p className="lead">Nikmati kopi nusantara pilihan, makanan favorit, dan suasana nyaman untuk bekerja, berdiskusi, maupun bersantai bersama teman.</p>
-                    
+
                     <div className="hero-actions">
                       <a
                         href="https://wa.me/6288289277876?text=Halo%20Warkop%201001cc%2C%20saya%20ingin%20reservasi%20tempat"
@@ -312,35 +294,22 @@ export default function App() {
                         Lihat Menu Khas <ArrowRight size={16} className="btn-icon" />
                       </a>
                     </div>
-
-                    {/* Mobile Quick Stats Strip */}
-                    <div className="hero-mobile-stats">
-                      <div className="hero-stat-item">
-                        <Clock size={14} color="var(--accent-copper)" /> Buka 24 Jam Non-Stop
-                      </div>
-                      <div className="hero-stat-item">
-                        <Star size={14} fill="var(--accent-copper)" color="var(--accent-copper)" /> Rating 4.8 Google
-                      </div>
-                      <div className="hero-stat-item">
-                        <Wifi size={14} color="var(--accent-copper)" /> Free Wi-Fi & AC
-                      </div>
-                    </div>
                   </div>
                 </ScrollReveal>
 
                 {/* Hero Polaroid Photo Box with Depth Parallax */}
                 <ScrollReveal variant="slide-right" delay={150}>
                   <div className="hero-photo-wrap">
-                    <div 
+                    <div
                       className="polaroid-card"
                       style={{
                         transform: `rotate(-2deg) rotateY(${tilt.x}deg) rotateX(${-tilt.y}deg)`
                       }}
                     >
                       <div className="polaroid-img-box">
-                        <img 
-                          src={berandaWarkopPhotoImg} 
-                          alt="Warkop 1001cc photo" 
+                        <img
+                          src={berandaWarkopPhotoImg}
+                          alt="Warkop 1001cc photo"
                           className="polaroid-img"
                         />
                       </div>
@@ -410,10 +379,10 @@ export default function App() {
 
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '0.9rem', color: 'var(--text-dark)' }}>
                         {/* Clickable Address */}
-                        <a 
-                          href="https://maps.google.com/?q=Warkop+1001cc+Bojonggede+Kemang+Bomang+Kalisuren" 
-                          target="_blank" 
-                          rel="noopener noreferrer" 
+                        <a
+                          href="https://maps.google.com/?q=Warkop+1001cc+Bojonggede+Kemang+Bomang+Kalisuren"
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className="card-hover"
                           style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--text-dark)', textDecoration: 'none', fontWeight: '600', padding: '12px', borderRadius: '12px', background: '#FFFFFF', border: '1px solid var(--border-card)' }}
                         >
@@ -432,10 +401,10 @@ export default function App() {
                         </div>
 
                         {/* Clickable WhatsApp Phone */}
-                        <a 
-                          href="https://wa.me/6288289277876" 
-                          target="_blank" 
-                          rel="noopener noreferrer" 
+                        <a
+                          href="https://wa.me/6288289277876"
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className="card-hover"
                           style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--text-dark)', textDecoration: 'none', fontWeight: '600', padding: '12px', borderRadius: '12px', background: '#FFFFFF', border: '1px solid var(--border-card)' }}
                         >
@@ -448,9 +417,9 @@ export default function App() {
                     </div>
 
                     {/* Clickable Map Image Container */}
-                    <a 
-                      href="https://maps.google.com/?q=Warkop+1001cc+Bojonggede+Kemang+Bomang+Kalisuren" 
-                      target="_blank" 
+                    <a
+                      href="https://maps.google.com/?q=Warkop+1001cc+Bojonggede+Kemang+Bomang+Kalisuren"
+                      target="_blank"
                       rel="noopener noreferrer"
                       className="card-hover"
                       style={{ display: 'block', borderRadius: '18px', overflow: 'hidden', border: '1px solid var(--border-card)', boxShadow: '0 15px 35px rgba(0,0,0,0.08)', textDecoration: 'none', position: 'relative' }}
@@ -517,9 +486,9 @@ export default function App() {
             color: '#C96E28'
           }}>
             {/* Clickable Location */}
-            <a 
-              href="https://maps.google.com/?q=Warkop+1001cc+Bojonggede+Kemang+Bomang+Kalisuren" 
-              target="_blank" 
+            <a
+              href="https://maps.google.com/?q=Warkop+1001cc+Bojonggede+Kemang+Bomang+Kalisuren"
+              target="_blank"
               rel="noopener noreferrer"
               style={{ color: '#C96E28', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
             >
@@ -527,9 +496,9 @@ export default function App() {
             </a>
 
             {/* Clickable Phone / WhatsApp */}
-            <a 
-              href="https://wa.me/6288289277876" 
-              target="_blank" 
+            <a
+              href="https://wa.me/6288289277876"
+              target="_blank"
               rel="noopener noreferrer"
               style={{ color: '#C96E28', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
             >
@@ -537,17 +506,17 @@ export default function App() {
             </a>
 
             {/* Clickable Email */}
-            <a 
-              href="mailto:warkop1001cc@gmail.com" 
+            <a
+              href="mailto:warkop1001cc@gmail.com"
               style={{ color: '#C96E28', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
             >
               <Mail size={14} color="#C96E28" /> warkop1001cc@gmail.com
             </a>
 
             {/* Clickable Instagram */}
-            <a 
-              href="https://www.instagram.com/warkop1001cc" 
-              target="_blank" 
+            <a
+              href="https://www.instagram.com/warkop1001cc"
+              target="_blank"
               rel="noopener noreferrer"
               style={{ color: '#C96E28', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
             >
@@ -568,35 +537,6 @@ export default function App() {
           </div>
         </div>
       </footer>
-
-      {/* STICKY FLOATING MOBILE BOTTOM ACTION BAR */}
-      <div className="mobile-bottom-bar">
-        <a 
-          href="#" 
-          className="mobile-bottom-btn secondary"
-          onClick={(e) => handleNavClick('signature', e)}
-        >
-          <Coffee size={16} color="#C96E28" /> Menu Khas
-        </a>
-
-        <a 
-          href="https://maps.google.com/?q=Warkop+1001cc+Bojonggede+Kemang+Bomang+Kalisuren" 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="mobile-bottom-btn secondary"
-        >
-          <MapPin size={16} color="#C96E28" /> Petunjuk Peta
-        </a>
-
-        <a 
-          href="https://wa.me/6288289277876?text=Halo%20Warkop%201001cc%2C%20saya%20ingin%20reservasi%20tempat" 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="mobile-bottom-btn primary"
-        >
-          <MessageCircle size={16} /> Reservasi WA
-        </a>
-      </div>
 
       {/* Contact & Reservation Modal */}
       <ContactModal

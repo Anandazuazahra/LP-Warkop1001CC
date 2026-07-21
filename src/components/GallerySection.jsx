@@ -169,13 +169,7 @@ export default function GallerySection() {
 
         {/* Gallery Grid */}
         <ScrollReveal variant="up" delay={100} stagger>
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
-              gap: '18px'
-            }}
-          >
+          <div className="gallery-grid-container">
             {filteredItems.map((item, index) => (
               <div
                 key={item.id}
@@ -183,7 +177,7 @@ export default function GallerySection() {
                 onClick={() => handleOpenLightbox(index)}
                 style={{
                   background: '#FFFFFF',
-                  borderRadius: '18px',
+                  borderRadius: '16px',
                   overflow: 'hidden',
                   border: '1px solid var(--border-card)',
                   cursor: 'pointer',
@@ -191,7 +185,7 @@ export default function GallerySection() {
                   position: 'relative'
                 }}
               >
-                <div style={{ position: 'relative', height: '220px', overflow: 'hidden' }}>
+                <div className="gallery-card-img-box">
                   <img
                     src={item.image}
                     alt={item.title}
@@ -221,39 +215,40 @@ export default function GallerySection() {
                       style={{
                         background: '#FFFFFF',
                         color: 'var(--text-dark)',
-                        padding: '10px 18px',
+                        padding: '8px 14px',
                         borderRadius: '20px',
                         fontWeight: '700',
-                        fontSize: '0.85rem',
+                        fontSize: '0.8rem',
                         display: 'flex',
                         alignItems: 'center',
                         gap: '6px',
                         boxShadow: '0 4px 14px rgba(0,0,0,0.2)'
                       }}
                     >
-                      <Eye size={16} color="var(--accent-copper)" /> Perbesar Foto
+                      <Eye size={14} color="var(--accent-copper)" /> Perbesar
                     </div>
                   </div>
                 </div>
 
-                <div style={{ padding: '16px 20px' }}>
+                <div className="gallery-card-content" style={{ padding: '14px 16px' }}>
                   <div
                     style={{
-                      fontSize: '0.75rem',
+                      fontSize: '0.72rem',
                       fontFamily: 'var(--font-mono)',
                       fontWeight: '700',
                       color: 'var(--accent-copper)',
                       textTransform: 'uppercase',
                       letterSpacing: '0.05em',
-                      marginBottom: '4px'
+                      marginBottom: '3px'
                     }}
                   >
                     {item.category}
                   </div>
                   <h3
+                    className="gallery-card-title"
                     style={{
                       fontFamily: 'var(--font-serif)',
-                      fontSize: '1.05rem',
+                      fontSize: '0.98rem',
                       color: 'var(--text-headline)',
                       lineHeight: '1.3'
                     }}
@@ -265,6 +260,7 @@ export default function GallerySection() {
             ))}
           </div>
         </ScrollReveal>
+
       </div>
 
       {/* LIGHTBOX MODAL WITH SMOOTH FADE TRANSITION */}
