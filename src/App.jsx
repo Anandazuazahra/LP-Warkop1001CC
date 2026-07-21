@@ -193,48 +193,13 @@ export default function App() {
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Buka Menu Navigasi"
           >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
-
-
-
-        {/* Mobile Horizontal Scrollable Navigation Pill Bar */}
-        <div className="mobile-tab-bar">
-          <button 
-            className={`mobile-tab-pill ${activeTab === 'home' ? 'active' : ''}`}
-            onClick={(e) => handleNavClick('home', e)}
-          >
-            Beranda
-          </button>
-          <button 
-            className={`mobile-tab-pill ${activeTab === 'signature' ? 'active' : ''}`}
-            onClick={(e) => handleNavClick('signature', e)}
-          >
-            Menu Signature
-          </button>
-          <button 
-            className={`mobile-tab-pill ${activeTab === 'testimoni' ? 'active' : ''}`}
-            onClick={(e) => handleNavClick('testimoni', e)}
-          >
-            Testimoni
-          </button>
-          <button 
-            className={`mobile-tab-pill ${activeTab === 'event' ? 'active' : ''}`}
-            onClick={(e) => handleNavClick('event', e)}
-          >
-            Event
-          </button>
-          <button 
-            className={`mobile-tab-pill ${activeTab === 'about' ? 'active' : ''}`}
-            onClick={(e) => handleNavClick('about', e)}
-          >
-            Tentang Warkop
+            {isMobileMenuOpen ? <X size={26} /> : <Menu size={26} />}
           </button>
         </div>
 
         {/* Mobile Navigation Drawer */}
         <div className={`mobile-nav-drawer ${isMobileMenuOpen ? 'open' : ''}`}>
+
           <a
             href="#"
             className={`mobile-nav-link ${activeTab === 'home' ? 'active' : ''}`}
