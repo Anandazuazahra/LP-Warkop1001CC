@@ -248,7 +248,51 @@ nav .wrap {
   display: inline-flex;
 }
 
-@media screen and (max-width: 1024px) {
+/* MOBILE HORIZONTAL NAVIGATION PILL BAR */
+.mobile-tab-bar {
+  display: none;
+  background: rgba(250, 246, 240, 0.98);
+  border-top: 1px solid rgba(224, 208, 188, 0.5);
+  border-bottom: 1px solid var(--border-card);
+  padding: 8px 12px;
+  overflow-x: auto;
+  white-space: nowrap;
+  gap: 8px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.mobile-tab-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.mobile-tab-pill {
+  background: #FFFFFF;
+  color: var(--text-dark);
+  border: 1px solid var(--border-card);
+  padding: 7px 15px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 0.82rem;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+  font-family: var(--font-sans);
+}
+
+.mobile-tab-pill.active {
+  background: var(--accent-copper);
+  color: #FFFFFF;
+  border-color: var(--accent-copper);
+  box-shadow: 0 4px 12px rgba(201, 110, 40, 0.35);
+}
+
+@media screen and (max-width: 860px) {
+  .mobile-tab-bar {
+    display: flex !important;
+  }
+
   .navlinks,
   .nav-cta,
   .desktop-only {
@@ -272,6 +316,7 @@ nav .wrap {
     display: flex !important;
   }
 }
+
 
 
 
