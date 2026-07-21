@@ -141,7 +141,25 @@ export default function App() {
         <div className="wrap">
           <div className="brand" style={{ cursor: 'pointer' }} onClick={(e) => handleNavClick('home', e)}>
             <img src={logoImg} alt="Warkop 1001cc Logo" style={{ width: '32px', height: '32px', objectFit: 'contain' }} />
-            <span style={{ fontSize: '1.15rem' }}>Warkop 1001cc</span>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ fontSize: '1.15rem' }}>Warkop 1001cc</span>
+                <span style={{
+                  fontSize: '0.68rem',
+                  color: '#15803D',
+                  fontWeight: '800',
+                  background: 'rgba(34, 197, 94, 0.15)',
+                  padding: '2px 8px',
+                  borderRadius: '12px',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  fontFamily: 'var(--font-mono)'
+                }}>
+                  <span className="status-pulse-dot"></span> 24 JAM
+                </span>
+              </div>
+            </div>
           </div>
 
           {/* Desktop Navigation Links */}
@@ -293,6 +311,19 @@ export default function App() {
                       <a href="#" onClick={(e) => handleNavClick('signature', e)} className="btn-ghost">
                         Lihat Menu Khas <ArrowRight size={16} className="btn-icon" />
                       </a>
+                    </div>
+
+                    {/* Mobile Quick Stats Strip */}
+                    <div className="hero-mobile-stats">
+                      <div className="hero-stat-item">
+                        <Clock size={14} color="var(--accent-copper)" /> Buka 24 Jam Non-Stop
+                      </div>
+                      <div className="hero-stat-item">
+                        <Star size={14} fill="var(--accent-copper)" color="var(--accent-copper)" /> Rating 4.8 Google
+                      </div>
+                      <div className="hero-stat-item">
+                        <Wifi size={14} color="var(--accent-copper)" /> Free Wi-Fi & AC
+                      </div>
                     </div>
                   </div>
                 </ScrollReveal>
@@ -537,6 +568,35 @@ export default function App() {
           </div>
         </div>
       </footer>
+
+      {/* STICKY FLOATING MOBILE BOTTOM ACTION BAR */}
+      <div className="mobile-bottom-bar">
+        <a 
+          href="#" 
+          className="mobile-bottom-btn secondary"
+          onClick={(e) => handleNavClick('signature', e)}
+        >
+          <Coffee size={16} color="#C96E28" /> Menu Khas
+        </a>
+
+        <a 
+          href="https://maps.google.com/?q=Warkop+1001cc+Bojonggede+Kemang+Bomang+Kalisuren" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="mobile-bottom-btn secondary"
+        >
+          <MapPin size={16} color="#C96E28" /> Petunjuk Peta
+        </a>
+
+        <a 
+          href="https://wa.me/6288289277876?text=Halo%20Warkop%201001cc%2C%20saya%20ingin%20reservasi%20tempat" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="mobile-bottom-btn primary"
+        >
+          <MessageCircle size={16} /> Reservasi WA
+        </a>
+      </div>
 
       {/* Contact & Reservation Modal */}
       <ContactModal

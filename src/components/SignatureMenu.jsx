@@ -377,9 +377,30 @@ export default function SignatureMenu() {
               <Sparkles size={15} color={item.textColor} style={{ flexShrink: 0 }} />
               <span>{item.badgeText}</span>
             </motion.div>
+
+            {/* MOBILE SWIPE HINT BADGE */}
+            <div 
+              style={{
+                marginTop: '10px',
+                fontSize: '0.72rem',
+                color: 'rgba(255, 255, 255, 0.75)',
+                fontFamily: 'var(--font-mono)',
+                letterSpacing: '0.05em',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                background: 'rgba(0,0,0,0.4)',
+                padding: '4px 12px',
+                borderRadius: '12px',
+                border: '1px solid rgba(255,255,255,0.1)'
+              }}
+            >
+              <span>👈 Usap Layar / Ketuk Panah 👉</span>
+            </div>
           </motion.div>
         </AnimatePresence>
       </motion.div>
+
 
       {/* NAVIGATION TABS & CONTROLS ROW BELOW BANNER */}
       <div className="wrap" style={{ marginTop: '24px' }}>
