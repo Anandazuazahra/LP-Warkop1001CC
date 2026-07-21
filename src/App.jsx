@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Coffee, 
   MapPin, 
@@ -13,7 +13,10 @@ import {
   Share2,
   Mail,
   MessageCircle,
-  ExternalLink
+  ExternalLink,
+  ArrowRight,
+  Camera,
+  Star
 } from 'lucide-react';
 
 const InstagramIcon = ({ size = 14, color = "#C96E28" }) => (
@@ -31,19 +34,54 @@ import AboutWarkop from './components/AboutWarkop';
 import Articles from './components/Articles';
 import Events from './components/Events';
 import ContactModal from './components/ContactModal';
+import ScrollReveal from './components/ScrollReveal';
+import GallerySection from './components/GallerySection';
+import TestimonialsSection from './components/TestimonialsSection';
 
 import mapImg from './assets/warkop_map.png';
 import berandaWarkopPhotoImg from './assets/beranda_warkop_photo.jpg';
 
 export default function App() {
-  // Navigation / Tab State: 'home', 'signature', 'event', 'about'
+  // Navigation / Tab State: 'home', 'signature', 'galeri', 'testimoni', 'event', 'about'
   const [activeTab, setActiveTab] = useState('home');
+
+  // Sticky Glass Navbar Scroll State
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  // Parallax Tilt State for Hero Polaroid
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
 
   // Contact / Reservation Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
   
   // Toast State
   const [toasts, setToasts] = useState([]);
+
+  // Navbar Scroll Detection
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 20) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Parallax Mouse Movement
+  const handleMouseMove = (e) => {
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) return;
+
+    const { clientX, clientY } = e;
+    const { innerWidth, innerHeight } = window;
+    const x = (clientX / innerWidth - 0.5) * 12; // deg shift
+    const y = (clientY / innerHeight - 0.5) * 12;
+    setTilt({ x, y });
+  };
 
   // Toast Helper
   const addToast = (message, type = 'success') => {
@@ -59,9 +97,14 @@ export default function App() {
   };
 
   const handleNavClick = (tab, e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     setActiveTab(tab);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    if (tab === 'home') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   return (
@@ -91,8 +134,8 @@ export default function App() {
         ))}
       </div>
 
-      {/* Top Navbar */}
-      <nav>
+      {/* Top Navbar with Dynamic Scroll Glass Effect */}
+      <nav className={isScrolled ? 'nav-scrolled' : ''}>
         <div className="wrap">
           <div className="brand" style={{ cursor: 'pointer' }} onClick={(e) => handleNavClick('home', e)}>
             <img src={logoImg} alt="Warkop 1001cc Logo" style={{ width: '32px', height: '32px', objectFit: 'contain' }} />
@@ -113,7 +156,15 @@ export default function App() {
               className={activeTab === 'signature' ? 'active' : ''}
               onClick={(e) => handleNavClick('signature', e)}
             >
-              Our Signature
+              Menu Signature
+            </a>
+
+            <a
+              href="#"
+              className={activeTab === 'testimoni' ? 'active' : ''}
+              onClick={(e) => handleNavClick('testimoni', e)}
+            >
+              Testimoni
             </a>
 
             <a
@@ -133,161 +184,196 @@ export default function App() {
             </a>
           </div>
 
-          <button onClick={() => setIsModalOpen(true)} className="nav-cta">
-            Reservasi Tempat
-          </button>
+          <a
+            href="https://wa.me/6288289277876?text=Halo%20Warkop%201001cc%2C%20saya%20ingin%20reservasi%20tempat"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="nav-cta"
+            style={{ textDecoration: 'none' }}
+          >
+            Reservasi Tempat <ArrowRight size={14} className="btn-icon" />
+          </a>
         </div>
       </nav>
 
       {/* Main Content View Switcher */}
       <main>
         {activeTab === 'home' && (
-          <div className="animate-fade-up">
-            {/* Hero Section */}
-            <section className="hero">
+          <div>
+            {/* Hero Section with Parallax Mouse Movement */}
+            <section className="hero" onMouseMove={handleMouseMove}>
               <div className="wrap hero-grid">
-                <div>
-                  <div className="eyebrow">Warkop & Ruang Kolaborasi</div>
-                  <h1>Tempat Nongkrong Hangat,<br /><em>Kopi Terbaik</em> Setiap Saat.</h1>
-                  <p className="lead">Nikmati kopi nusantara pilihan, makanan favorit, dan suasana nyaman untuk bekerja, berdiskusi, maupun bersantai bersama teman.</p>
-                  
-                  <div className="hero-actions">
-                    <button onClick={() => setIsModalOpen(true)} className="btn-primary">
-                      Reservasi Tempat
-                    </button>
-                    <a href="#" onClick={(e) => handleNavClick('signature', e)} className="btn-ghost">
-                      Lihat Menu Khas
-                    </a>
-                  </div>
-                </div>
-
-                {/* Hero Polaroid Photo Box */}
-                <div className="hero-photo-wrap">
-                  <div className="polaroid-card">
-                    <div className="polaroid-img-box">
-                      <img 
-                        src={berandaWarkopPhotoImg} 
-                        alt="Warkop 1001cc photo" 
-                        className="polaroid-img"
-                      />
+                <ScrollReveal variant="up">
+                  <div>
+                    <div className="eyebrow">Warkop & Ruang Kolaborasi</div>
+                    <h1>Tempat Nongkrong Hangat,<br /><em>Kopi Terbaik</em> Setiap Saat.</h1>
+                    <p className="lead">Nikmati kopi nusantara pilihan, makanan favorit, dan suasana nyaman untuk bekerja, berdiskusi, maupun bersantai bersama teman.</p>
+                    
+                    <div className="hero-actions">
+                      <a
+                        href="https://wa.me/6288289277876?text=Halo%20Warkop%201001cc%2C%20saya%20ingin%20reservasi%20tempat"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn-primary"
+                        style={{ textDecoration: 'none' }}
+                      >
+                        Reservasi Tempat <ArrowRight size={16} className="btn-icon" />
+                      </a>
+                      <a href="#" onClick={(e) => handleNavClick('signature', e)} className="btn-ghost">
+                        Lihat Menu Khas <ArrowRight size={16} className="btn-icon" />
+                      </a>
                     </div>
-                    <div className="polaroid-caption">Warkop 1001cc — Buka 24 Jam</div>
-                    <div className="polaroid-sub">Bojonggede - Kemang (Bomang), Kalisuren</div>
                   </div>
-                </div>
+                </ScrollReveal>
+
+                {/* Hero Polaroid Photo Box with Depth Parallax */}
+                <ScrollReveal variant="slide-right" delay={150}>
+                  <div className="hero-photo-wrap">
+                    <div 
+                      className="polaroid-card"
+                      style={{
+                        transform: `rotate(-2deg) rotateY(${tilt.x}deg) rotateX(${-tilt.y}deg)`
+                      }}
+                    >
+                      <div className="polaroid-img-box">
+                        <img 
+                          src={berandaWarkopPhotoImg} 
+                          alt="Warkop 1001cc photo" 
+                          className="polaroid-img"
+                        />
+                      </div>
+                      <div className="polaroid-caption">Warkop 1001cc — Buka 24 Jam</div>
+                      <div className="polaroid-sub">Bojonggede - Kemang (Bomang), Kalisuren</div>
+                    </div>
+                  </div>
+                </ScrollReveal>
               </div>
             </section>
 
-            {/* Features Grid Section */}
+            {/* Features Grid Section with Scroll Reveal */}
             <section className="section" id="fitur">
               <div className="wrap">
-                <div className="section-head">
-                  <div className="eyebrow">Mengapa Memilih Kami?</div>
-                  <h2>Kenyamanan dan Rasa dalam Satu Tempat</h2>
-                  <p>Kami merancang ruang dan produk kami agar setiap kunjungan Anda menjadi momen produktif dan menyenangkan.</p>
-                </div>
-
-                <div className="features-grid">
-                  <div className="feature-card">
-                    <div className="feature-icon-box" style={{ background: 'rgba(201,124,62,0.15)', color: 'var(--copper-light)', width: '48px', height: '48px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <Wifi size={24} />
-                    </div>
-                    <h3>Ruang Kerja Nyaman</h3>
-                    <p>Dilengkapi Wi-Fi kencang, colokan listrik melimpah di setiap meja, AC dingin, dan suasana tenang yang cocok untuk Work From Cafe (WFC).</p>
+                <ScrollReveal variant="up">
+                  <div className="section-head">
+                    <div className="eyebrow">Mengapa Memilih Kami?</div>
+                    <h2>Kenyamanan dan Rasa dalam Satu Tempat</h2>
+                    <p>Kami merancang ruang dan produk kami agar setiap kunjungan Anda menjadi momen produktif dan menyenangkan.</p>
                   </div>
+                </ScrollReveal>
 
-                  <div className="feature-card">
-                    <div className="feature-icon-box" style={{ background: 'rgba(201,124,62,0.15)', color: 'var(--copper-light)', width: '48px', height: '48px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <Clock size={24} />
+                <ScrollReveal variant="up" delay={100} stagger>
+                  <div className="features-grid">
+                    <div className="feature-card">
+                      <div className="feature-icon-box" style={{ background: 'rgba(201,124,62,0.15)', color: 'var(--accent-copper)', width: '48px', height: '48px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px' }}>
+                        <Wifi size={24} />
+                      </div>
+                      <h3 style={{ fontSize: '1.25rem', marginBottom: '10px' }}>Ruang Kerja Nyaman</h3>
+                      <p style={{ color: 'var(--text-muted)', fontSize: '0.92rem' }}>Dilengkapi Wi-Fi kencang, colokan listrik melimpah di setiap meja, AC dingin, dan suasana tenang yang cocok untuk Work From Cafe (WFC).</p>
                     </div>
-                    <h3>Buka 24 Jam Non-Stop</h3>
-                    <p>Siap melayani kebutuhan kopi & camilan hangat Anda kapan pun, baik siang hari maupun larut malam tanpa antrean.</p>
-                  </div>
 
-                  <div className="feature-card">
-                    <div className="feature-icon-box" style={{ background: 'rgba(201,124,62,0.15)', color: 'var(--copper-light)', width: '48px', height: '48px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <Coffee size={24} />
+                    <div className="feature-card">
+                      <div className="feature-icon-box" style={{ background: 'rgba(201,124,62,0.15)', color: 'var(--accent-copper)', width: '48px', height: '48px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px' }}>
+                        <Clock size={24} />
+                      </div>
+                      <h3 style={{ fontSize: '1.25rem', marginBottom: '10px' }}>Buka 24 Jam Non-Stop</h3>
+                      <p style={{ color: 'var(--text-muted)', fontSize: '0.92rem' }}>Siap melayani kebutuhan kopi & camilan hangat Anda kapan pun, baik siang hari maupun larut malam tanpa antrean.</p>
                     </div>
-                    <h3>Signature Kopi Cakra</h3>
-                    <p>Racikan es kopi susu signature legendaris 1001cc dengan sensasi rasa manis gurih cokelat yang khas dan pekat.</p>
+
+                    <div className="feature-card">
+                      <div className="feature-icon-box" style={{ background: 'rgba(201,124,62,0.15)', color: 'var(--accent-copper)', width: '48px', height: '48px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px' }}>
+                        <Coffee size={24} />
+                      </div>
+                      <h3 style={{ fontSize: '1.25rem', marginBottom: '10px' }}>Signature Kopi Cakra</h3>
+                      <p style={{ color: 'var(--text-muted)', fontSize: '0.92rem' }}>Racikan es kopi susu signature legendaris 1001cc dengan sensasi rasa manis gurih cokelat yang khas dan pekat.</p>
+                    </div>
                   </div>
-                </div>
+                </ScrollReveal>
               </div>
             </section>
+
+            {/* Customer Testimonials Section */}
+            <TestimonialsSection />
 
             {/* Map / Location Banner */}
             <section className="section" style={{ background: 'var(--bg-cream)', padding: '60px 0' }}>
-              <div className="wrap" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '40px', alignItems: 'center' }}>
-                <div>
-                  <div className="eyebrow">Lokasi & Jam Operasional</div>
-                  <h2 style={{ fontSize: '2rem', marginBottom: '16px', color: 'var(--text-headline)' }}>Kunjungi Warkop 1001cc</h2>
-                  <p style={{ color: 'var(--text-muted)', lineHeight: '1.7', marginBottom: '24px' }}>
-                    Terletak strategis di jalur Bomang (Bojonggede - Kemang), Kalisuren, Tajur Halang. Tempat nongkrong luas, parkir aman, dan tempat yang pas untuk bertemu teman.
-                  </p>
+              <div className="wrap">
+                <ScrollReveal variant="up">
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '40px', alignItems: 'center' }}>
+                    <div>
+                      <div className="eyebrow">Lokasi & Jam Operasional</div>
+                      <h2 style={{ fontSize: '2rem', marginBottom: '16px', color: 'var(--text-headline)' }}>Kunjungi Warkop 1001cc</h2>
+                      <p style={{ color: 'var(--text-muted)', lineHeight: '1.7', marginBottom: '24px' }}>
+                        Terletak strategis di jalur Bomang (Bojonggede - Kemang), Kalisuren, Tajur Halang. Tempat nongkrong luas, parkir aman, dan tempat yang pas untuk bertemu teman.
+                      </p>
 
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', fontSize: '0.95rem', color: 'var(--text-dark)' }}>
-                    {/* Clickable Address */}
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', fontSize: '0.95rem', color: 'var(--text-dark)' }}>
+                        {/* Clickable Address */}
+                        <a 
+                          href="https://maps.google.com/?q=Warkop+1001cc+Bojonggede+Kemang+Bomang+Kalisuren" 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="card-hover"
+                          style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--text-dark)', textDecoration: 'none', fontWeight: '600', padding: '12px', borderRadius: '12px', background: '#FFFFFF', border: '1px solid var(--border-card)' }}
+                        >
+                          <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'rgba(201, 110, 40, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                            <MapPin size={18} color="var(--accent-copper)" />
+                          </div>
+                          <span>Kalisuren, Tajur Halang, Bojonggede - Kemang (Bomang)</span>
+                        </a>
+
+                        {/* Operational Hours */}
+                        <div className="card-hover" style={{ display: 'flex', alignItems: 'center', gap: '12px', fontWeight: '600', padding: '12px', borderRadius: '12px', background: '#FFFFFF', border: '1px solid var(--border-card)' }}>
+                          <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'rgba(201, 110, 40, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                            <Clock size={18} color="var(--accent-copper)" />
+                          </div>
+                          <span>Buka 24 Jam Non-Stop Setiap Hari (Senin - Minggu)</span>
+                        </div>
+
+                        {/* Clickable WhatsApp Phone */}
+                        <a 
+                          href="https://wa.me/6288289277876" 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="card-hover"
+                          style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--text-dark)', textDecoration: 'none', fontWeight: '600', padding: '12px', borderRadius: '12px', background: '#FFFFFF', border: '1px solid var(--border-card)' }}
+                        >
+                          <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'rgba(201, 110, 40, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                            <Phone size={18} color="var(--accent-copper)" />
+                          </div>
+                          <span>0882-8927-7876 (WhatsApp Reservasi & Informasi)</span>
+                        </a>
+                      </div>
+                    </div>
+
+                    {/* Clickable Map Image Container */}
                     <a 
                       href="https://maps.google.com/?q=Warkop+1001cc+Bojonggede+Kemang+Bomang+Kalisuren" 
                       target="_blank" 
-                      rel="noopener noreferrer" 
-                      style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--text-dark)', textDecoration: 'none', fontWeight: '600' }}
+                      rel="noopener noreferrer"
+                      className="card-hover"
+                      style={{ display: 'block', borderRadius: '20px', overflow: 'hidden', border: '1px solid var(--border-card)', boxShadow: '0 15px 35px rgba(0,0,0,0.08)', textDecoration: 'none', position: 'relative' }}
                     >
-                      <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'rgba(201, 110, 40, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                        <MapPin size={18} color="var(--accent-copper)" />
+                      <img src={mapImg} alt="Peta Lokasi Warkop 1001cc" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                      <div style={{
+                        position: 'absolute',
+                        bottom: '12px',
+                        right: '12px',
+                        background: 'rgba(0, 0, 0, 0.75)',
+                        color: '#FFFFFF',
+                        padding: '8px 14px',
+                        borderRadius: '20px',
+                        fontSize: '0.8rem',
+                        fontWeight: '700',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        backdropFilter: 'blur(4px)'
+                      }}>
+                        <ExternalLink size={14} /> Buka Peta Petunjuk Arah
                       </div>
-                      <span>Kalisuren, Tajur Halang, Bojonggede - Kemang (Bomang)</span>
-                    </a>
-
-                    {/* Operational Hours */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontWeight: '600' }}>
-                      <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'rgba(201, 110, 40, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                        <Clock size={18} color="var(--accent-copper)" />
-                      </div>
-                      <span>Buka 24 Jam Non-Stop Setiap Hari (Senin - Minggu)</span>
-                    </div>
-
-                    {/* Clickable WhatsApp Phone */}
-                    <a 
-                      href="https://wa.me/6288289277876" 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--text-dark)', textDecoration: 'none', fontWeight: '600' }}
-                    >
-                      <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'rgba(201, 110, 40, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                        <Phone size={18} color="var(--accent-copper)" />
-                      </div>
-                      <span>0882-8927-7876 (WhatsApp Reservasi & Informasi)</span>
                     </a>
                   </div>
-                </div>
-
-                {/* Clickable Map Image Container */}
-                <a 
-                  href="https://maps.google.com/?q=Warkop+1001cc+Bojonggede+Kemang+Bomang+Kalisuren" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  style={{ display: 'block', borderRadius: '20px', overflow: 'hidden', border: '1px solid var(--border-card)', boxShadow: '0 15px 35px rgba(0,0,0,0.08)', textDecoration: 'none', position: 'relative' }}
-                >
-                  <img src={mapImg} alt="Peta Lokasi Warkop 1001cc" style={{ width: '100%', height: 'auto', display: 'block' }} />
-                  <div style={{
-                    position: 'absolute',
-                    bottom: '12px',
-                    right: '12px',
-                    background: 'rgba(0, 0, 0, 0.75)',
-                    color: '#FFFFFF',
-                    padding: '8px 14px',
-                    borderRadius: '20px',
-                    fontSize: '0.8rem',
-                    fontWeight: '700',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    backdropFilter: 'blur(4px)'
-                  }}>
-                    <ExternalLink size={14} /> Buka Peta Petunjuk Arah
-                  </div>
-                </a>
+                </ScrollReveal>
               </div>
             </section>
           </div>
@@ -295,12 +381,14 @@ export default function App() {
 
         {activeTab === 'signature' && <SignatureMenu />}
 
+        {activeTab === 'testimoni' && <TestimonialsSection />}
+
         {activeTab === 'event' && <Events onReserve={() => setIsModalOpen(true)} />}
 
         {activeTab === 'about' && <AboutWarkop />}
       </main>
 
-      {/* Footer - 1:1 Verbatim Match with User Screenshot */}
+      {/* Footer - Verbatim Match */}
       <footer style={{ background: '#1A0E07', color: '#D4A373', padding: '36px 0 28px', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
         <div className="wrap" style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '14px' }}>
           {/* Top Title */}

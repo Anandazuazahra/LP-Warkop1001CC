@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Calendar, Clock, MapPin, Users, Sparkles, ArrowRight, Share2, Ticket, X, Eye } from 'lucide-react';
+import { Calendar, MapPin, Ticket, X, Eye } from 'lucide-react';
 import eventSayembaraImg from '../assets/event_sayembara_kreator.jpg';
 import eventKaraokeImg from '../assets/event_lomba_karaoke.jpg';
+import ScrollReveal from './ScrollReveal';
 
 const EVENTS = [
   {
@@ -28,7 +29,7 @@ const EVENTS = [
   }
 ];
 
-export default function Events({ onReserve }) {
+export default function Events() {
   const [selectedCategory, setSelectedCategory] = useState('Semua');
   const [activePoster, setActivePoster] = useState(null);
 
@@ -39,48 +40,49 @@ export default function Events({ onReserve }) {
     : EVENTS.filter(e => e.category === selectedCategory);
 
   return (
-    <div className="animate-fade-up">
-      {/* Header Banner */}
-      <section className="events-hero section">
+    <div>
+      {/* Unified Single Section with Tight Spacing */}
+      <section className="section" style={{ paddingTop: '44px', paddingBottom: '60px' }}>
         <div className="wrap">
-          <div className="eyebrow float-subtle">Agenda & Komunitas</div>
-          <h1 style={{ fontSize: 'clamp(2.2rem, 4vw, 3.2rem)', marginBottom: '16px' }}>
-            Event & Kegiatan Seru di <em>Warkop 1001cc</em>
-          </h1>
-          <p className="lead" style={{ maxWidth: '640px' }}>
-            Dari lomba kreatif, karaoke gembira, live music akustik, hingga workshop edukasi — intip dokumentasi event seru dan agenda mendatang kami.
-          </p>
+          {/* Header Title & Description */}
+          <ScrollReveal variant="up">
+            <div style={{ marginBottom: '28px' }}>
+              <div className="eyebrow float-subtle">Agenda & Komunitas</div>
+              <h1 style={{ fontSize: 'clamp(2.2rem, 4vw, 3rem)', marginBottom: '12px' }}>
+                Event & Kegiatan Seru di <em>Warkop 1001cc</em>
+              </h1>
+              <p className="lead" style={{ maxWidth: '640px', marginBottom: '0' }}>
+                Dari lomba kreatif, karaoke gembira, live music akustik, hingga workshop edukasi — intip dokumentasi event seru dan agenda mendatang kami.
+              </p>
 
-          {/* Category Filter Pills - High Contrast & Clearly Clickable */}
-          <div className="filter-pills" style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginTop: '28px' }}>
-            {categories.map(cat => (
-              <button
-                key={cat}
-                onClick={() => setSelectedCategory(cat)}
-                style={{
-                  background: selectedCategory === cat ? 'var(--accent-copper)' : '#FFFFFF',
-                  color: selectedCategory === cat ? '#FFFFFF' : 'var(--text-dark)',
-                  border: selectedCategory === cat ? '1px solid var(--accent-copper)' : '1px solid var(--border-card)',
-                  padding: '9px 20px',
-                  borderRadius: '20px',
-                  fontWeight: '700',
-                  fontSize: '0.88rem',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                  boxShadow: selectedCategory === cat ? '0 6px 16px rgba(201, 110, 40, 0.35)' : '0 2px 8px rgba(0,0,0,0.05)'
-                }}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-        </div>
-      </section>
+              {/* Filter Pills */}
+              <div className="filter-pills" style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginTop: '20px' }}>
+                {categories.map(cat => (
+                  <button
+                    key={cat}
+                    onClick={() => setSelectedCategory(cat)}
+                    style={{
+                      background: selectedCategory === cat ? 'var(--accent-copper)' : '#FFFFFF',
+                      color: selectedCategory === cat ? '#FFFFFF' : 'var(--text-dark)',
+                      border: selectedCategory === cat ? '1px solid var(--accent-copper)' : '1px solid var(--border-card)',
+                      padding: '8px 20px',
+                      borderRadius: '20px',
+                      fontWeight: '700',
+                      fontSize: '0.88rem',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s ease',
+                      boxShadow: selectedCategory === cat ? '0 6px 16px rgba(201, 110, 40, 0.35)' : '0 2px 8px rgba(0,0,0,0.05)'
+                    }}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </ScrollReveal>
 
-      {/* Events Grid */}
-      <section className="section" style={{ paddingTop: '0' }}>
-        <div className="wrap">
-          <div className="events-grid stagger-parent reveal-on-scroll" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '28px' }}>
+          {/* Events Grid */}
+          <div className="events-grid stagger-parent reveal-on-scroll" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px' }}>
             {filteredEvents.map((evt) => (
               <div 
                 key={evt.id}
@@ -96,9 +98,10 @@ export default function Events({ onReserve }) {
                   transition: 'transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease'
                 }}
               >
+                {/* Poster Top Box */}
                 <div 
                   className="img-zoom-box"
-                  style={{ position: 'relative', height: '280px', overflow: 'hidden', background: '#1C130D', cursor: 'pointer' }}
+                  style={{ position: 'relative', height: '240px', overflow: 'hidden', background: '#25150B', cursor: 'pointer' }}
                   onClick={() => setActivePoster(evt)}
                   title="Klik untuk melihat poster penuh"
                 >
@@ -108,8 +111,8 @@ export default function Events({ onReserve }) {
                     style={{ 
                       width: '100%', 
                       height: '100%', 
-                      objectFit: 'contain',
-                      background: '#1C130D',
+                      objectFit: 'cover',
+                      objectPosition: 'top center',
                       transition: 'transform 0.3s ease'
                     }}
                   />
@@ -139,14 +142,15 @@ export default function Events({ onReserve }) {
                     background: 'rgba(20, 14, 9, 0.75)',
                     backdropFilter: 'blur(4px)',
                     color: '#F5F1EA',
-                    padding: '4px 8px',
+                    padding: '4px 10px',
                     borderRadius: '6px',
-                    fontSize: '0.72rem',
+                    fontSize: '0.75rem',
+                    fontWeight: '600',
                     display: 'flex',
                     alignItems: 'center',
                     gap: '4px'
                   }}>
-                    <Eye size={12} /> Lihat Poster
+                    <Eye size={13} /> Lihat Poster
                   </div>
                 </div>
 
@@ -197,13 +201,15 @@ export default function Events({ onReserve }) {
                       <Eye size={16} color="#C96E28" /> Lihat Poster Dokumentasi
                     </button>
                   ) : (
-                    <button
-                      onClick={onReserve}
+                    <a
+                      href="https://wa.me/6288289277876?text=Halo%20Warkop%201001cc%2C%20saya%20ingin%20reservasi%20spot%20event"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="btn-primary"
-                      style={{ marginTop: '20px', width: '100%', justifyContent: 'center', padding: '12px 18px', fontSize: '0.88rem' }}
+                      style={{ marginTop: '20px', width: '100%', justifyContent: 'center', padding: '12px 18px', fontSize: '0.88rem', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
                     >
                       <Ticket size={16} /> Ikuti / Reservasi Spot
-                    </button>
+                    </a>
                   )}
                 </div>
               </div>
@@ -237,7 +243,7 @@ export default function Events({ onReserve }) {
               background: '#1c130d',
               borderRadius: '16px',
               overflow: 'hidden',
-              border: '1px solid var(--line)',
+              border: '1px solid var(--border-card)',
               boxShadow: '0 20px 50px rgba(0,0,0,0.8)',
               display: 'flex',
               flexDirection: 'column'
@@ -246,7 +252,7 @@ export default function Events({ onReserve }) {
           >
             <div style={{
               display: 'flex',
-              justify: 'space-between',
+              justifyContent: 'space-between',
               alignItems: 'center',
               padding: '16px 20px',
               background: 'rgba(28, 19, 13, 0.95)',

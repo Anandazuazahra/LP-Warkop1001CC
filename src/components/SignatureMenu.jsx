@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, Sparkles, Flame, Coffee, Award } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ChevronLeft, ChevronRight, Sparkles, Flame, Coffee } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import ScrollReveal from './ScrollReveal';
 
 import kopiCakraGlassImg from '../assets/kopi_cakra_glass.png';
 import matchaCakraGlassImg from '../assets/matcha_cakra_glass.png';
@@ -12,7 +14,7 @@ const SIGNATURE_ITEMS = [
     id: 'kopi_cakra',
     tag: 'Best Seller #1',
     category: 'Signature Coffee #1',
-    name: 'Kopi Cakra',
+    name: 'Kopi Cakra Original',
     badgeText: 'Ngopi Sambil Nyoklat',
     headline: 'Kopi Cakra: Nikmati Sensasi Ngopi Sambil Nyoklat',
     desc: (
@@ -29,27 +31,24 @@ const SIGNATURE_ITEMS = [
         <p style={{ marginBottom: '16px' }}>
           Melalui racikan yang seimbang, Kopi Cakra membuktikan bahwa secangkir kopi tidak hanya menghadirkan kenikmatan rasa, tetapi juga pengalaman yang lebih bermakna. Setiap sajian dibuat untuk memberikan sensasi hangat, nyaman, dan penuh karakter—menjadikannya pilihan tepat bagi pecinta kopi maupun pencinta cokelat.
         </p>
-        <p style={{ marginBottom: '16px' }}>
-          <strong>Kopi Cakra</strong> bukan hanya minuman, melainkan sebuah pengalaman. Karena terkadang, secangkir kopi akan terasa lebih istimewa ketika dinikmati dengan sentuhan cokelat.
-        </p>
-        <p style={{ fontWeight: 'bold', color: '#C96E28' }}>
+        <p style={{ fontWeight: 'bold', color: '#C96E28', marginTop: '20px' }}>
           Kopi Cakra — Ngopi Sambil Nyoklat.
         </p>
       </>
     ),
-    price: 'Rp 18.000',
-    bgGradient: 'radial-gradient(ellipse at 50% 50%, #522b16 0%, #381b0e 55%, #220f07 100%)',
+    bgGradient: 'radial-gradient(ellipse at 50% 50%, #4D2814 0%, #351A0C 55%, #1C0C05 100%)',
     bgText: 'CAKRA',
     textColor: '#D97706',
     pillBg: '#C96E28',
     glassImage: kopiCakraGlassImg,
     floatLeftImg: floatingBeansImg,
     floatRightImg: floatingChocolateImg,
-    profile: { sweetness: 3, body: 4, acidity: 1, aroma: 5 }
+    glassHeight: '460px',
+    glassTransform: 'translateY(0px) scale(1.48)'
   },
   {
     id: 'matcha_cakra',
-    tag: 'Trending Non-Coffee',
+    tag: 'Trending Inovasi',
     category: 'Signature Non-Coffee',
     name: 'Cakra Matcha Latte',
     badgeText: 'Japanese Matcha Meets Espresso Cakra',
@@ -70,22 +69,35 @@ const SIGNATURE_ITEMS = [
         </p>
       </>
     ),
-    price: 'Rp 20.000',
-    bgGradient: 'radial-gradient(ellipse at 50% 50%, #294c1e 0%, #1a3513 55%, #0d1e0a 100%)',
+    bgGradient: 'radial-gradient(ellipse at 50% 50%, #25441B 0%, #183011 55%, #0B1907 100%)',
     bgText: 'MATCHA',
-    textColor: '#65a30d',
+    textColor: '#84CC16',
     pillBg: '#558b2f',
     glassImage: matchaCakraGlassImg,
     floatLeftImg: floatingBeansImg,
     floatRightImg: matchaSplashImg,
-    profile: { sweetness: 2, body: 4, acidity: 1, aroma: 5 }
+    glassHeight: '480px',
+    glassTransform: 'translateY(12px) scale(1.48)'
   }
 ];
 
 export default function SignatureMenu() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [touchStartX, setTouchStartX] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
   const item = SIGNATURE_ITEMS[activeIndex];
+
+  // Detect prefers-reduced-motion
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setPrefersReducedMotion(mediaQuery.matches);
+
+    const handleChange = (e) => setPrefersReducedMotion(e.matches);
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
 
   const handleNext = () => {
     setActiveIndex((prev) => (prev + 1) % SIGNATURE_ITEMS.length);
@@ -109,275 +121,420 @@ export default function SignatureMenu() {
   };
 
   return (
-    <div className="animate-fade-up" style={{ padding: '0 0 80px', width: '100%' }}>
-      {/* Banner Hero Card - 100% FULL-WIDTH EDGE-TO-EDGE with Touch Swipe Support */}
-      <div
+    <ScrollReveal variant="up" style={{ padding: '0 0 54px', width: '100%' }}>
+      {/* 1. HERO BANNER CONTAINER: Compact Section Height as in Screenshot */}
+      <motion.div
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        animate={{ background: item.bgGradient }}
+        transition={{ duration: 0.5, ease: 'easeInOut' }}
         style={{
-          background: item.bgGradient,
-          borderRadius: '0px',
           width: '100%',
           position: 'relative',
           overflow: 'hidden',
-          padding: '40px 20px 30px',
-          minHeight: '540px',
+          padding: '40px 20px 32px',
+          minHeight: '520px',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          boxShadow: '0 20px 50px rgba(0,0,0,0.3)',
-          transition: 'background 0.5s ease',
-          cursor: 'grab'
+          boxShadow: '0 20px 45px rgba(0,0,0,0.35)'
         }}
       >
-          {/* Background Text */}
-          <div
-            style={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              fontSize: 'clamp(6.5rem, 22vw, 16rem)',
-              fontFamily: 'Fraunces, serif',
-              fontWeight: '900',
-              color: 'rgba(255,255,255,0.04)',
-              letterSpacing: '0.1em',
-              userSelect: 'none',
-              pointerEvents: 'none',
-              whiteSpace: 'nowrap'
-            }}
-          >
-            {item.bgText}
-          </div>
-
-          {/* Left / Right Arrow Buttons */}
-          <button
-            onClick={handlePrev}
-            style={{
-              position: 'absolute',
-              left: '24px',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              width: '50px',
-              height: '50px',
-              borderRadius: '50%',
-              background: 'rgba(0,0,0,0.45)',
-              border: '1px solid rgba(255,255,255,0.2)',
-              color: '#FFF',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-              zIndex: 15,
-              backdropFilter: 'blur(6px)',
-              boxShadow: '0 8px 20px rgba(0,0,0,0.4)'
-            }}
-          >
-            <ChevronLeft size={28} />
-          </button>
-
-          <button
-            onClick={handleNext}
-            style={{
-              position: 'absolute',
-              right: '24px',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              width: '50px',
-              height: '50px',
-              borderRadius: '50%',
-              background: 'rgba(0,0,0,0.45)',
-              border: '1px solid rgba(255,255,255,0.2)',
-              color: '#FFF',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-              zIndex: 15,
-              backdropFilter: 'blur(6px)',
-              boxShadow: '0 8px 20px rgba(0,0,0,0.4)'
-            }}
-          >
-            <ChevronRight size={28} />
-          </button>
-
-          {/* Floating Images Graphic - 1:1 DEAD-CENTERED SYMMETRICAL COMPOSITION */}
-          <div style={{ position: 'relative', width: '100%', maxWidth: '1080px', height: '380px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            {/* Left float: Coffee Beans Emerging Right Behind Glass */}
-            {item.floatLeftImg && (
-              <img
-                src={item.floatLeftImg}
-                alt="floating coffee beans"
-                style={{
-                  position: 'absolute',
-                  left: '6%',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  width: '360px',
-                  maxWidth: '35%',
-                  opacity: 0.85,
-                  filter: 'drop-shadow(0 15px 30px rgba(0,0,0,0.45))',
-                  zIndex: 2,
-                  pointerEvents: 'none'
-                }}
-              />
-            )}
-
-            {/* Glowing Spotlight Aura behind glass cup */}
-            <div
+        {/* WATERMARK TEKS BESAR: Centered Background (z-index 0) */}
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            pointerEvents: 'none',
+            overflow: 'hidden',
+            zIndex: 0
+          }}
+        >
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={`bgtext-${item.id}`}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 1.05 }}
+              transition={{ duration: 0.5, ease: 'easeInOut' }}
               style={{
-                position: 'absolute',
-                left: '50%',
-                top: '50%',
-                transform: 'translate(-50%, -50%)',
-                width: '460px',
-                height: '360px',
-                borderRadius: '50%',
-                background: item.id === 'kopi_cakra' 
-                  ? 'radial-gradient(circle, rgba(201, 110, 40, 0.45) 0%, transparent 70%)' 
-                  : 'radial-gradient(circle, rgba(136, 171, 73, 0.45) 0%, transparent 70%)',
-                filter: 'blur(35px)',
+                width: '100%',
+                textAlign: 'center',
+                fontSize: 'clamp(3.5rem, 15vw, 11rem)',
+                fontFamily: 'Fraunces, serif',
+                fontWeight: '900',
+                color: 'rgba(255, 255, 255, 0.04)',
+                letterSpacing: '0.08em',
+                userSelect: 'none',
                 pointerEvents: 'none',
-                zIndex: 1
+                whiteSpace: 'nowrap',
+                lineHeight: '1'
               }}
-            />
-
-            {/* Glass Cup: ROCK-SOLID PERFECTLY ALIGNED HERO (Zero Jumping on Swipe) */}
-            <img
-              key={`glass-cup-img-${item.id}`}
-              src={item.glassImage}
-              alt={item.name}
-              style={{
-                height: item.id === 'kopi_cakra' ? '415px' : '465px',
-                width: 'auto',
-                maxWidth: 'none',
-                objectFit: 'contain',
-                position: 'relative',
-                margin: '0 auto',
-                display: 'block',
-                zIndex: 10,
-                transform: item.id === 'kopi_cakra' 
-                  ? 'translateY(-14px) scale(1.22)' 
-                  : 'translateY(-38px) translateX(2px) scale(1.22)',
-                filter: 'drop-shadow(0 35px 70px rgba(0,0,0,0.85))',
-                transition: 'all 0.3s cubic-bezier(0.25, 1, 0.5, 1)'
-              }}
-            />
-
-            {/* Right float: Chocolate / Matcha Splash Emerging Right Behind Glass */}
-            {item.floatRightImg && (
-              <img
-                src={item.floatRightImg}
-                alt="floating chocolate or matcha splash"
-                style={{
-                  position: 'absolute',
-                  right: '6%',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  width: '360px',
-                  maxWidth: '35%',
-                  opacity: 0.88,
-                  filter: 'drop-shadow(0 15px 30px rgba(0,0,0,0.45))',
-                  zIndex: 2,
-                  pointerEvents: 'none'
-                }}
-              />
-            )}
-          </div>
-
-          {/* Center Tagline Pill Button - Identical Placement Below Glass */}
-          <div
-            style={{
-              position: 'relative',
-              marginTop: '14px',
-              padding: '10px 26px',
-              borderRadius: '30px',
-              background: 'rgba(0, 0, 0, 0.55)',
-              border: '1px solid rgba(255,255,255,0.25)',
-              color: '#FFF',
-              fontWeight: '700',
-              fontSize: '0.9rem',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '8px',
-              zIndex: 20,
-              backdropFilter: 'blur(8px)',
-              boxShadow: '0 8px 24px rgba(0,0,0,0.3)'
-            }}
-          >
-            <Sparkles size={16} color="#F59E0B" />
-            <span>{item.badgeText}</span>
-          </div>
+            >
+              {item.bgText}
+            </motion.div>
+          </AnimatePresence>
         </div>
 
-      <div className="wrap max-w-6xl mx-auto px-4" style={{ marginTop: '30px' }}>
-        {/* Slider Navigation Bar Below */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', items: 'center', justifyContent: 'space-between', gap: '12px', borderBottom: '1px solid #E2D7C7', paddingBottom: '20px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <span style={{ background: item.pillBg, color: '#FFF', fontSize: '0.75rem', fontWeight: '800', padding: '4px 12px', borderRadius: '12px' }}>
+        {/* FOCAL GLASS SLIDE CONTENT */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={item.id}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5, ease: 'easeInOut' }}
+            style={{
+              width: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              position: 'relative',
+              zIndex: 5
+            }}
+          >
+            {/* Stage Box: 460px Height */}
+            <div
+              style={{
+                position: 'relative',
+                width: '100%',
+                maxWidth: '1200px',
+                height: '460px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+            >
+              {/* LEFT DECORATIVE ELEMENT (Biji Kopi): z-index 3 BEHIND glass cup, opacity 0.45 */}
+              {item.floatLeftImg && (
+                <motion.img
+                  src={item.floatLeftImg}
+                  alt="floating coffee beans"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{
+                    opacity: 0.45,
+                    scale: 1,
+                    y: prefersReducedMotion ? 0 : [-10, 10, -10]
+                  }}
+                  transition={{
+                    opacity: { duration: 0.4, delay: 0.05 },
+                    scale: { duration: 0.4, delay: 0.05 },
+                    y: {
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: 'easeInOut'
+                    }
+                  }}
+                  style={{
+                    position: 'absolute',
+                    left: '12%',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    width: '320px',
+                    maxWidth: '28%',
+                    filter: 'drop-shadow(0 15px 30px rgba(0,0,0,0.45))',
+                    zIndex: 3,
+                    pointerEvents: 'none'
+                  }}
+                />
+              )}
+
+              {/* Cinematic Spotlight Aura behind center glass (z-index 1) */}
+              <motion.div
+                animate={{
+                  scale: prefersReducedMotion ? 1 : [1, 1.06, 1],
+                  opacity: prefersReducedMotion ? 1 : [0.85, 1, 0.85]
+                }}
+                transition={{
+                  duration: 3.5,
+                  repeat: Infinity,
+                  ease: 'easeInOut'
+                }}
+                style={{
+                  position: 'absolute',
+                  left: '50%',
+                  top: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  width: '520px',
+                  height: '420px',
+                  borderRadius: '50%',
+                  background:
+                    item.id === 'kopi_cakra'
+                      ? 'radial-gradient(circle, rgba(201, 110, 40, 0.52) 0%, transparent 70%)'
+                      : 'radial-gradient(circle, rgba(136, 171, 73, 0.52) 0%, transparent 70%)',
+                  filter: 'blur(45px)',
+                  pointerEvents: 'none',
+                  zIndex: 1
+                }}
+              />
+
+              {/* MASSIVE GLASS CUP (ONLY THE GLASS IS ENLARGED VISUALLY TO FILL THE COMPACT BANNER) */}
+              <motion.img
+                src={item.glassImage}
+                alt={item.name}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{
+                  opacity: 1,
+                  scale: 1,
+                  y: prefersReducedMotion ? 0 : [-6, 6, -6]
+                }}
+                transition={{
+                  opacity: { duration: 0.5, ease: 'easeInOut' },
+                  scale: { duration: 0.5, ease: 'easeInOut' },
+                  y: {
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: 'easeInOut'
+                  }
+                }}
+                style={{
+                  height: item.glassHeight,
+                  width: 'auto',
+                  maxWidth: 'none',
+                  objectFit: 'contain',
+                  position: 'relative',
+                  margin: '0 auto',
+                  display: 'block',
+                  zIndex: 20,
+                  transform: item.glassTransform,
+                  filter: 'drop-shadow(0 45px 95px rgba(0,0,0,0.95))'
+                }}
+              />
+
+              {/* RIGHT DECORATIVE ELEMENT (Splash / Chocolate): z-index 3 BEHIND glass cup, opacity 0.45 */}
+              {item.floatRightImg && (
+                <motion.img
+                  src={item.floatRightImg}
+                  alt="floating chocolate or matcha splash"
+                  initial={{ opacity: 0, scale: 0.6, rotate: -8 }}
+                  animate={{
+                    opacity: 0.45,
+                    scale: 1,
+                    rotate: 0,
+                    y: prefersReducedMotion ? 0 : [6, -6, 6]
+                  }}
+                  transition={{
+                    opacity: { duration: 0.5, ease: 'easeOut', delay: 0.15 },
+                    scale: { duration: 0.6, ease: 'easeOut', delay: 0.15 },
+                    rotate: { duration: 0.6, ease: 'easeOut', delay: 0.15 },
+                    y: {
+                      duration: 3.2,
+                      repeat: Infinity,
+                      ease: 'easeInOut'
+                    }
+                  }}
+                  style={{
+                    position: 'absolute',
+                    right: '12%',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    width: '320px',
+                    maxWidth: '28%',
+                    filter: 'drop-shadow(0 15px 30px rgba(0,0,0,0.45))',
+                    zIndex: 3,
+                    pointerEvents: 'none'
+                  }}
+                />
+              )}
+            </div>
+
+            {/* BADGE TEKS DI BAWAH GELAS PRODUK */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, ease: 'easeOut', delay: 0.3 }}
+              style={{
+                position: 'relative',
+                marginTop: '16px',
+                padding: '10px 24px',
+                borderRadius: '30px',
+                background: 'rgba(0, 0, 0, 0.7)',
+                border: `1px solid ${item.pillBg}`,
+                color: '#FFF',
+                fontWeight: '700',
+                fontSize: '0.92rem',
+                letterSpacing: '0.02em',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                zIndex: 25,
+                backdropFilter: 'blur(8px)',
+                boxShadow: '0 8px 25px rgba(0,0,0,0.45)'
+              }}
+            >
+              <Sparkles size={16} color={item.textColor} />
+              <span>{item.badgeText}</span>
+            </motion.div>
+          </motion.div>
+        </AnimatePresence>
+      </motion.div>
+
+      {/* NAVIGATION TABS & CONTROLS ROW BELOW BANNER */}
+      <div className="wrap" style={{ marginTop: '28px' }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: '32px',
+            flexWrap: 'wrap',
+            gap: '16px'
+          }}
+        >
+          {/* Left Category Badges */}
+          <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+            <span
+              style={{
+                background: item.pillBg,
+                color: '#FFFFFF',
+                padding: '8px 20px',
+                borderRadius: '20px',
+                fontWeight: '700',
+                fontSize: '0.86rem',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.12)',
+                transition: 'background 0.3s ease'
+              }}
+            >
               {item.tag}
             </span>
-            <span style={{ fontSize: '0.85rem', color: '#665544', fontWeight: '600', fontFamily: 'Space Mono, monospace' }}>
+            <span
+              style={{
+                background: '#EFE6D8',
+                color: 'var(--text-muted)',
+                padding: '8px 18px',
+                borderRadius: '20px',
+                fontWeight: '600',
+                fontSize: '0.86rem',
+                border: '1px solid var(--border-light)'
+              }}
+            >
               {item.category}
             </span>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          {/* Right Controls: Product Selector Pills + Prev/Next Arrows */}
+          <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
+            {/* Product Selector Pills */}
             {SIGNATURE_ITEMS.map((sig, idx) => (
-              <button
+              <motion.button
                 key={sig.id}
                 onClick={() => setActiveIndex(idx)}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
                 style={{
                   background: activeIndex === idx ? sig.pillBg : '#FFFFFF',
-                  color: activeIndex === idx ? '#FFF' : 'var(--text-dark)',
-                  border: activeIndex === idx ? `1px solid ${sig.pillBg}` : '1px solid var(--border-card)',
+                  color: activeIndex === idx ? '#FFFFFF' : 'var(--text-dark)',
+                  border: activeIndex === idx ? 'none' : '1px solid var(--border-card)',
                   padding: '9px 20px',
-                  borderRadius: '10px',
-                  fontSize: '0.85rem',
+                  borderRadius: '12px',
                   fontWeight: '700',
+                  fontSize: '0.88rem',
                   cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                  boxShadow: activeIndex === idx ? '0 4px 14px rgba(0,0,0,0.18)' : '0 2px 8px rgba(0,0,0,0.05)'
+                  boxShadow: activeIndex === idx ? '0 6px 16px rgba(0,0,0,0.15)' : 'none',
+                  transition: 'all 0.25s ease'
                 }}
               >
                 {sig.name}
-              </button>
+              </motion.button>
             ))}
-          </div>
-        </div>
 
-        {/* Detailed Item Information Section - Ultra Aesthetic Full-Width Story Panel */}
-        <div style={{
-          marginTop: '40px',
-          background: '#FFFFFF',
-          borderRadius: '24px',
-          padding: '44px 48px',
-          border: '1px solid var(--border-card)',
-          boxShadow: '0 15px 35px rgba(0,0,0,0.05)'
-        }}>
-          <div style={{ width: '100%' }}>
-            <h2 style={{
-              fontSize: '2.2rem',
-              fontFamily: 'var(--font-serif)',
-              color: 'var(--text-headline)',
-              marginBottom: '24px',
-              lineHeight: '1.25',
-              letterSpacing: '-0.01em'
-            }}>
-              {item.headline}
-            </h2>
+            {/* Prev & Next Arrow Buttons */}
+            <div style={{ display: 'flex', gap: '8px', marginLeft: '6px' }}>
+              <motion.button
+                onClick={handlePrev}
+                whileHover={{ scale: 1.1, backgroundColor: 'var(--border-card)' }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ duration: 0.15 }}
+                aria-label="Previous Product"
+                style={{
+                  width: '42px',
+                  height: '42px',
+                  borderRadius: '50%',
+                  background: '#FFFFFF',
+                  border: '1px solid var(--border-card)',
+                  color: 'var(--text-headline)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.06)'
+                }}
+              >
+                <ChevronLeft size={20} />
+              </motion.button>
 
-            <div style={{
-              color: 'var(--text-dark)',
-              fontSize: '1.02rem',
-              lineHeight: '1.8'
-            }}>
-              {item.desc}
+              <motion.button
+                onClick={handleNext}
+                whileHover={{ scale: 1.1, backgroundColor: 'var(--border-card)' }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ duration: 0.15 }}
+                aria-label="Next Product"
+                style={{
+                  width: '42px',
+                  height: '42px',
+                  borderRadius: '50%',
+                  background: '#FFFFFF',
+                  border: '1px solid var(--border-card)',
+                  color: 'var(--text-headline)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.06)'
+                }}
+              >
+                <ChevronRight size={20} />
+              </motion.button>
             </div>
           </div>
         </div>
+
+        {/* ELEGANT MASTER PRODUCT PRESENTATION CARD (Eliminates Empty Space) */}
+        <div
+          style={{
+            background: '#FFFFFF',
+            borderRadius: '24px',
+            border: '1px solid var(--border-card)',
+            boxShadow: '0 12px 36px rgba(44, 24, 11, 0.05)',
+            padding: '44px 48px',
+            maxWidth: '1100px',
+            margin: '0 auto'
+          }}
+        >
+          <h2
+            style={{
+              fontFamily: 'var(--font-serif)',
+              fontSize: 'clamp(1.8rem, 3.5vw, 2.3rem)',
+              color: 'var(--text-headline)',
+              marginBottom: '24px',
+              lineHeight: '1.28',
+              textAlign: 'center'
+            }}
+          >
+            {item.headline}
+          </h2>
+
+          <div
+            style={{
+              color: 'var(--text-dark)',
+              fontSize: '1rem',
+              lineHeight: '1.8',
+              textAlign: 'left'
+            }}
+          >
+            {item.desc}
+          </div>
+        </div>
       </div>
-    </div>
+    </ScrollReveal>
   );
 }
