@@ -187,17 +187,6 @@ export default function App() {
             </a>
           </div>
 
-          {/* Desktop CTA Button */}
-          <a
-            href="https://wa.me/6288289277876?text=Halo%20Warkop%201001cc%2C%20saya%20ingin%20reservasi%20tempat"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="nav-cta desktop-only"
-            style={{ textDecoration: 'none' }}
-          >
-            Reservasi Tempat <ArrowRight size={14} className="btn-icon" />
-          </a>
-
           {/* Mobile Hamburger Menu Toggle Button */}
           <button 
             className="mobile-menu-toggle"
@@ -207,6 +196,8 @@ export default function App() {
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
+
+
 
         {/* Mobile Horizontal Scrollable Navigation Pill Bar */}
         <div className="mobile-tab-bar">
