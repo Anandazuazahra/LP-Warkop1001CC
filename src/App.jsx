@@ -89,7 +89,13 @@ export default function App() {
   useEffect(() => {
     // Check URL query string or hash for secret admin mode
     const searchParams = new URLSearchParams(window.location.search);
-    if (searchParams.get('admin') === 'true' || window.location.hash === '#admin' || window.location.hash === '#cms') {
+    if (
+      searchParams.get('admin') === 'true' ||
+      window.location.hash === '#admin' ||
+      window.location.hash === '#cms' ||
+      window.location.pathname.toLowerCase().includes('/login') ||
+      window.location.pathname.toLowerCase().includes('/admin')
+    ) {
       setIsAdminModalOpen(true);
     }
 
