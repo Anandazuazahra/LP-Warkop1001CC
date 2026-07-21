@@ -4,7 +4,9 @@ import eventSayembaraImg from '../assets/event_sayembara_kreator.jpg';
 import eventKaraokeImg from '../assets/event_lomba_karaoke.jpg';
 import ScrollReveal from './ScrollReveal';
 
-const EVENTS = [
+import { useCMSData } from '../cms/cmsStore';
+
+const DEFAULT_EVENTS = [
   {
     id: 'sayembara_kreator',
     title: 'Sayembara Kreator 1001CC (Grand Prize 4 Jt)',
@@ -30,10 +32,14 @@ const EVENTS = [
 ];
 
 export default function Events() {
+  const { cmsData } = useCMSData();
+  const EVENTS = cmsData?.events?.length > 0 ? cmsData.events : DEFAULT_EVENTS;
+
   const [selectedCategory, setSelectedCategory] = useState('Semua');
   const [activePoster, setActivePoster] = useState(null);
 
-  const categories = ['Semua', 'Lomba & Kompetisi'];
+  // Extract unique categories dynamically
+  const categories = ['Semua', ...Array.from(new Set(EVENTS.map(e => e.category).filter(Boolean)))];
 
   const filteredEvents = selectedCategory === 'Semua'
     ? EVENTS

@@ -39,11 +39,17 @@ import ContactModal from './components/ContactModal';
 import ScrollReveal from './components/ScrollReveal';
 import GallerySection from './components/GallerySection';
 import TestimonialsSection from './components/TestimonialsSection';
+import AdminCMSModal from './components/AdminCMSModal';
+import { useCMSData } from './cms/cmsStore';
+import { Settings, Lock } from 'lucide-react';
 
 import mapImg from './assets/warkop_map.png';
 import berandaWarkopPhotoImg from './assets/beranda_warkop_photo.jpg';
 
 export default function App() {
+  const { cmsData } = useCMSData();
+  const siteInfo = cmsData?.siteInfo || {};
+
   // Navigation / Tab State: 'home', 'signature', 'galeri', 'testimoni', 'event', 'about'
   const [activeTab, setActiveTab] = useState('home');
 
@@ -58,6 +64,9 @@ export default function App() {
 
   // Contact / Reservation Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Admin CMS Modal State
+  const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
 
   // Toast State
   const [toasts, setToasts] = useState([]);
@@ -74,6 +83,24 @@ export default function App() {
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Secret Admin Triggers (URL ?admin=true, hash #admin, or keyboard Ctrl+Shift+A)
+  useEffect(() => {
+    // Check URL query string or hash for secret admin mode
+    const searchParams = new URLSearchParams(window.location.search);
+    if (searchParams.get('admin') === 'true' || window.location.hash === '#admin' || window.location.hash === '#cms') {
+      setIsAdminModalOpen(true);
+    }
+
+    const handleKeyDown = (e) => {
+      if ((e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'a') || (e.altKey && e.key.toLowerCase() === 'c')) {
+        e.preventDefault();
+        setIsAdminModalOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   // Parallax Mouse Movement
@@ -141,7 +168,7 @@ export default function App() {
         <div className="wrap">
           <div className="brand" style={{ cursor: 'pointer' }} onClick={(e) => handleNavClick('home', e)}>
             <img src={logoImg} alt="Warkop 1001cc Logo" style={{ width: '32px', height: '32px', objectFit: 'contain' }} />
-            <span style={{ fontSize: '1.15rem' }}>Warkop 1001cc</span>
+            <span style={{ fontSize: '1.15rem' }}>{siteInfo.brandName || 'Warkop 1001cc'}</span>
           </div>
 
           {/* Desktop Navigation Links */}
@@ -246,11 +273,11 @@ export default function App() {
           </a>
 
           <a
-            href="https://wa.me/6288289277876?text=Halo%20Warkop%201001cc%2C%20saya%20ingin%20reservasi%20tempat"
+            href={`https://wa.me/${siteInfo.waNumberRaw || '6288289277876'}?text=Halo%20Warkop%201001cc%2C%20saya%20ingin%20reservasi%20tempat`}
             target="_blank"
             rel="noopener noreferrer"
             className="btn-primary"
-            style={{ width: '100%', justifyContent: 'center', marginTop: '8px', padding: '12px', textDecoration: 'none' }}
+            style={{ width: '100%', justifyContent: 'center', marginTop: '12px', padding: '12px', textDecoration: 'none' }}
           >
             Reservasi Tempat WA <ArrowRight size={16} />
           </a>
@@ -267,13 +294,19 @@ export default function App() {
               <div className="wrap hero-grid">
                 <ScrollReveal variant="up">
                   <div>
-                    <div className="eyebrow">Warkop & Ruang Kolaborasi</div>
-                    <h1>Tempat Nongkrong Hangat,<br className="hero-br" /><em>Kopi Terbaik</em> Setiap Saat.</h1>
-                    <p className="lead">Nikmati kopi nusantara pilihan, makanan favorit, dan suasana nyaman untuk bekerja, berdiskusi, maupun bersantai bersama teman.</p>
+                    <div className="eyebrow">{siteInfo.eyebrow || 'Warkop & Ruang Kolaborasi'}</div>
+                    <h1>
+                      {siteInfo.heroTitleLine1 || 'Tempat Nongkrong Hangat,'}
+                      <br className="hero-br" />
+                      <em>{siteInfo.heroTitleLine2 || 'Kopi Terbaik Setiap Saat.'}</em>
+                    </h1>
+                    <p className="lead">
+                      {siteInfo.heroLead || 'Nikmati kopi nusantara pilihan, makanan favorit, dan suasana nyaman untuk bekerja, berdiskusi, maupun bersantai bersama teman.'}
+                    </p>
 
                     <div className="hero-actions">
                       <a
-                        href="https://wa.me/6288289277876?text=Halo%20Warkop%201001cc%2C%20saya%20ingin%20reservasi%20tempat"
+                        href={`https://wa.me/${siteInfo.waNumberRaw || '6288289277876'}?text=Halo%20Warkop%201001cc%2C%20saya%20ingin%20reservasi%20tempat`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="btn-primary"
@@ -299,7 +332,7 @@ export default function App() {
                     >
                       <div className="polaroid-img-box">
                         <img
-                          src={berandaWarkopPhotoImg}
+                          src={siteInfo.heroImage || siteInfo.aboutImage || berandaWarkopPhotoImg}
                           alt="Warkop 1001cc photo"
                           className="polaroid-img"
                         />
@@ -454,15 +487,28 @@ export default function App() {
       <footer style={{ background: '#1A0E07', color: '#D4A373', padding: '32px 0 24px', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
         <div className="wrap" style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '14px' }}>
           {/* Top Title */}
-          <div style={{
-            fontSize: '0.85rem',
-            fontFamily: 'var(--font-mono)',
-            fontWeight: '700',
-            letterSpacing: '0.12em',
-            color: '#C96E28',
-            textTransform: 'uppercase'
-          }}>
-            WARKOP 1001CC © 2026
+          <div
+            onClick={() => {
+              window.adminClickCount = (window.adminClickCount || 0) + 1;
+              if (window.adminClickCount >= 3) {
+                window.adminClickCount = 0;
+                setIsAdminModalOpen(true);
+              }
+              setTimeout(() => { window.adminClickCount = 0; }, 2000);
+            }}
+            title="Warkop 1001cc"
+            style={{
+              fontSize: '0.85rem',
+              fontFamily: 'var(--font-mono)',
+              fontWeight: '700',
+              letterSpacing: '0.12em',
+              color: '#C96E28',
+              textTransform: 'uppercase',
+              cursor: 'default',
+              userSelect: 'none'
+            }}
+          >
+            {siteInfo.brandName?.toUpperCase() || 'WARKOP 1001CC'} © 2026
           </div>
 
           {/* Middle Inline Clickable Contacts Row */}
@@ -534,6 +580,12 @@ export default function App() {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSuccess={handleReservationSuccess}
+      />
+
+      {/* Full Admin CMS Panel Modal */}
+      <AdminCMSModal
+        isOpen={isAdminModalOpen}
+        onClose={() => setIsAdminModalOpen(false)}
       />
     </>
   );

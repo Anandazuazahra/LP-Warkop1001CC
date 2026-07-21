@@ -2,6 +2,8 @@ import React from 'react';
 import { Star, CheckCircle, ExternalLink, ArrowRight, ThumbsUp } from 'lucide-react';
 import ScrollReveal from './ScrollReveal';
 
+import { useCMSData } from '../cms/cmsStore';
+
 const GOOGLE_REVIEWS_URL = "https://share.google/xIOvmyIpiHmdJPiUq";
 
 // Subtle Google SVG Icon in brand color
@@ -14,7 +16,7 @@ const GoogleGIcon = ({ size = 18, color = "var(--accent-copper)" }) => (
   </svg>
 );
 
-const REAL_GOOGLE_REVIEWS = [
+const DEFAULT_REAL_GOOGLE_REVIEWS = [
   {
     id: 1,
     name: 'Deswinavivi Anjani',
@@ -34,50 +36,14 @@ const REAL_GOOGLE_REVIEWS = [
     tag: 'Warkop Rasa Cafe 24 Jam',
     comment: 'pas bgt buat yg mau nongkrong sampe pagi, bener’ recomend bgt warkop rasa cafe 24 jam ini, rasa makanan dan minuman nya juga ga kalah enak, tempat luas bisa indoor outdoor, udh sering kesini bner’ bikin nagih🥰🥰',
     scores: 'Makanan 5/5 · Layanan 5/5 · Suasana 5/5'
-  },
-  {
-    id: 3,
-    name: 'Qintan Qirana',
-    initials: 'QQ',
-    role: '8 ulasan · 10 foto · 5 bulan lalu',
-    rating: 5,
-    tag: 'Pelayanan Ramah & Cepat',
-    comment: 'mantap bgt pelayanan nya ramah, cepat dan harganya sangat terjangkau. mba icha, riska dan intan ramah sekali terimakasi ya. gonna be my fav place',
-    scores: 'Makanan 5/5 · Layanan 5/5 · Suasana 5/5'
-  },
-  {
-    id: 4,
-    name: 'Eny Widyastuti',
-    initials: 'EW',
-    role: 'Local Guide · 180 ulasan · 818 foto',
-    rating: 5,
-    tag: 'Ruangan AC & Bersih',
-    comment: 'Mencoba sarapan disini,. Crewnya ramah ramah, tempat bersih, nyaman ada ac kalo bawa anak anak, menunya variatif, harga masih affordable juga, semoga selalu pertahankan selalu ya.',
-    scores: 'Makanan 4/5 · Layanan 5/5 · Suasana 4/5'
-  },
-  {
-    id: 5,
-    name: 'Tsurayya Channel',
-    initials: 'TC',
-    role: 'Local Guide · 21 ulasan · 7 foto',
-    rating: 5,
-    tag: 'Cappucino Signature',
-    comment: 'Tempatnya nyaman ada ruangan ber AC Makananannya enak dan pegawai nya ramah. Rekomendasi cappucinonya mantepppp Jaya jaya jayaaaaa',
-    scores: 'Makanan 5/5 · Layanan 5/5 · Suasana 5/5'
-  },
-  {
-    id: 6,
-    name: 'Deswina Vivi Anjani',
-    initials: 'DA',
-    role: '1 ulasan · 6 foto · 3 bulan lalu',
-    rating: 5,
-    tag: 'Pemandangan Sore',
-    comment: 'Tempat mantap, makanan enak, semua menunya cocok di lidah pemandangan sorenya ga kalah bagus, rekomen buat semua usia si ini bisa karaoke juga',
-    scores: 'Makanan 5/5 · Layanan 5/5 · Suasana 5/5'
   }
 ];
 
 export default function TestimonialsSection() {
+  const { cmsData } = useCMSData();
+  const REAL_GOOGLE_REVIEWS = cmsData?.testimonials?.length > 0 ? cmsData.testimonials : DEFAULT_REAL_GOOGLE_REVIEWS;
+  const ratingValue = cmsData?.siteInfo?.googleRating || '4.8';
+  const ratingCountText = cmsData?.siteInfo?.googleReviewsCountText || 'Ulasan Asli Google Reviews · Warkop 1001cc Naik Kelas';
   return (
     <section className="section" id="testimoni" style={{ background: 'var(--bg-cream)', padding: '64px 0 54px' }}>
       <div className="wrap">
@@ -123,7 +89,7 @@ export default function TestimonialsSection() {
               <div style={{ textAlign: 'left' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                   <span style={{ fontSize: '1.5rem', fontFamily: 'var(--font-serif)', fontWeight: '700', color: 'var(--text-headline)', lineHeight: '1' }}>
-                    4.8
+                    {ratingValue}
                   </span>
                   <div style={{ display: 'flex', gap: '3px' }}>
                     {[...Array(5)].map((_, i) => (
@@ -132,7 +98,7 @@ export default function TestimonialsSection() {
                   </div>
                 </div>
                 <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginTop: '2px', fontWeight: '600' }}>
-                  Ulasan Asli Google Reviews · Warkop 1001cc Naik Kelas
+                  {ratingCountText}
                 </div>
               </div>
             </div>

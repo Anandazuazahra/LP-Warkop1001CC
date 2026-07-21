@@ -9,7 +9,9 @@ import matchaSplashImg from '../assets/matcha_splash.png';
 import floatingBeansImg from '../assets/floating_coffee_beans.png';
 import floatingChocolateImg from '../assets/floating_chocolate.png';
 
-const SIGNATURE_ITEMS = [
+import { useCMSData } from '../cms/cmsStore';
+
+const DEFAULT_SIGNATURE_ITEMS = [
   {
     id: 'kopi_cakra',
     tag: 'Best Seller #1',
@@ -17,25 +19,7 @@ const SIGNATURE_ITEMS = [
     name: 'Kopi Cakra Original',
     badgeText: 'Ngopi Sambil Nyoklat',
     headline: 'Kopi Cakra: Nikmati Sensasi Ngopi Sambil Nyoklat',
-    desc: (
-      <>
-        <p style={{ marginBottom: '16px' }}>
-          Di tengah berkembangnya budaya minum kopi, <strong>Kopi Cakra</strong> hadir sebagai <em>signature coffee</em> andalan <strong>1001cc</strong> yang menawarkan pengalaman berbeda melalui konsep <strong>"Ngopi Sambil Nyoklat."</strong> Bukan sekadar mencampurkan kopi dan cokelat, Kopi Cakra menghadirkan perpaduan rasa yang harmonis—pahit khas kopi berpadu dengan manis lembut cokelat, menciptakan cita rasa yang kaya, seimbang, dan berkarakter dalam setiap tegukan.
-        </p>
-        <p style={{ marginBottom: '16px' }}>
-          Keunikan Kopi Cakra terletak pada kemampuannya menghadirkan dua kenikmatan dalam satu cangkir. Aroma kopi yang kuat memberikan sensasi semangat, sementara sentuhan cokelat menghadirkan rasa lembut yang membuat pengalaman menikmati kopi terasa lebih nyaman dan menyenangkan. Perpaduan ini cocok dinikmati kapan saja, baik saat memulai hari, menemani waktu bekerja, belajar, maupun bersantai bersama teman.
-        </p>
-        <p style={{ marginBottom: '16px' }}>
-          Di balik kelezatannya, kombinasi kopi dan cokelat juga memiliki berbagai manfaat. Keduanya mengandung senyawa antioksidan alami, seperti <strong>polifenol</strong> dan <strong>flavonoid</strong>, yang berperan membantu melindungi sel-sel tubuh dari paparan radikal bebas. Kandungan <strong>kafein</strong> pada kopi dapat membantu meningkatkan fokus, konsentrasi, serta menjaga energi agar tetap optimal selama beraktivitas. Sementara itu, cokelat mengandung <strong>theobromine</strong>, senyawa alami yang memberikan efek relaksasi ringan dan membantu meningkatkan suasana hati.
-        </p>
-        <p style={{ marginBottom: '16px' }}>
-          Melalui racikan yang seimbang, Kopi Cakra membuktikan bahwa secangkir kopi tidak hanya menghadirkan kenikmatan rasa, tetapi juga pengalaman yang lebih bermakna. Setiap sajian dibuat untuk memberikan sensasi hangat, nyaman, dan penuh karakter—menjadikannya pilihan tepat bagi pecinta kopi maupun pencinta cokelat.
-        </p>
-        <p style={{ fontWeight: 'bold', color: '#C96E28', marginTop: '20px' }}>
-          Kopi Cakra — Ngopi Sambil Nyoklat.
-        </p>
-      </>
-    ),
+    descText: 'Di tengah berkembangnya budaya minum kopi, Kopi Cakra hadir sebagai signature coffee andalan 1001cc yang menawarkan pengalaman berbeda melalui konsep "Ngopi Sambil Nyoklat." Bukan sekadar mencampurkan kopi dan cokelat, Kopi Cakra menghadirkan perpaduan rasa yang harmonis—pahit khas kopi berpadu dengan manis lembut cokelat, menciptakan cita rasa yang kaya, seimbang, dan berkarakter dalam setiap tegukan.\n\nKeunikan Kopi Cakra terletak pada kemampuannya menghadirkan dua kenikmatan dalam satu cangkir.\n\nKopi Cakra — Ngopi Sambil Nyoklat.',
     bgGradient: 'radial-gradient(ellipse at 50% 50%, #4D2814 0%, #351A0C 55%, #1C0C05 100%)',
     bgText: 'CAKRA',
     textColor: '#D97706',
@@ -53,22 +37,7 @@ const SIGNATURE_ITEMS = [
     name: 'Cakra Matcha Latte',
     badgeText: 'Japanese Matcha Meets Espresso Cakra',
     headline: 'Cakra Matcha Latte: Nikmati Kesegaran Matcha dalam Setiap Tegukan',
-    desc: (
-      <>
-        <p style={{ marginBottom: '16px' }}>
-          <strong>Cakra Matcha Latte</strong> merupakan signature non-coffee dari <strong>1001cc</strong> yang memadukan matcha berkualitas dengan susu creamy untuk menghasilkan rasa yang lembut, segar, dan nikmat. Perpaduan keduanya menciptakan minuman yang cocok dinikmati kapan saja, baik saat memulai hari, bekerja, belajar, maupun bersantai.
-        </p>
-        <p style={{ marginBottom: '16px' }}>
-          Selain memiliki cita rasa yang khas, matcha juga dikenal mengandung antioksidan alami, terutama <strong>katekin (EGCG)</strong>, yang membantu melindungi sel-sel tubuh dari radikal bebas. Matcha juga mengandung <strong>L-theanine</strong>, senyawa alami yang dapat membantu meningkatkan fokus sekaligus memberikan efek rileks tanpa membuat mengantuk.
-        </p>
-        <p style={{ marginBottom: '16px' }}>
-          Sementara itu, susu memberikan tekstur yang lebih creamy serta menjadi sumber <strong>kalsium</strong> dan <strong>protein</strong> yang baik untuk tubuh. Kombinasi matcha dan susu menjadikan Cakra Matcha Latte tidak hanya lezat, tetapi juga menyegarkan dan nyaman dinikmati.
-        </p>
-        <p>
-          Dengan rasa yang seimbang dan lembut, <strong>Cakra Matcha Latte</strong> menjadi pilihan yang tepat bagi pencinta matcha maupun siapa saja yang mencari alternatif minuman tanpa kopi.
-        </p>
-      </>
-    ),
+    descText: 'Cakra Matcha Latte merupakan signature non-coffee dari 1001cc yang memadukan matcha berkualitas dengan susu creamy untuk menghasilkan rasa yang lembut, segar, dan nikmat.',
     bgGradient: 'radial-gradient(ellipse at 50% 50%, #25441B 0%, #183011 55%, #0B1907 100%)',
     bgText: 'MATCHA',
     textColor: '#84CC16',
@@ -82,12 +51,25 @@ const SIGNATURE_ITEMS = [
 ];
 
 export default function SignatureMenu() {
+  const { cmsData } = useCMSData();
+  const SIGNATURE_ITEMS = cmsData?.signatureMenu?.length > 0 ? cmsData.signatureMenu : DEFAULT_SIGNATURE_ITEMS;
+
   const [activeIndex, setActiveIndex] = useState(0);
   const [touchStartX, setTouchStartX] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
-  const item = SIGNATURE_ITEMS[activeIndex];
+  const rawItem = SIGNATURE_ITEMS[activeIndex] || SIGNATURE_ITEMS[0];
+  const item = {
+    ...rawItem,
+    glassImage: rawItem.glassImage || rawItem.image || kopiCakraGlassImg,
+    floatLeftImg: rawItem.floatLeftImg || floatingBeansImg,
+    floatRightImg: rawItem.floatRightImg || floatingChocolateImg,
+    bgGradient: rawItem.bgGradient || 'radial-gradient(ellipse at 50% 50%, #4D2814 0%, #351A0C 55%, #1C0C05 100%)',
+    pillBg: rawItem.pillBg || '#C96E28',
+    textColor: rawItem.textColor || '#D97706',
+    bgText: rawItem.bgText || '1001CC'
+  };
 
   // Detect prefers-reduced-motion
   useEffect(() => {
@@ -534,7 +516,11 @@ export default function SignatureMenu() {
               textAlign: 'left'
             }}
           >
-            {item.desc}
+            {item.desc ? item.desc : (
+              item.descText && item.descText.split('\n\n').map((p, i) => (
+                <p key={i} style={{ marginBottom: '16px' }}>{p}</p>
+              ))
+            )}
           </div>
         </div>
       </div>

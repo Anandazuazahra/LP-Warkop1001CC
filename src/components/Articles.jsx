@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Clock, BookOpen, X, ChevronRight, Share2 } from 'lucide-react';
+import { useCMSData } from '../cms/cmsStore';
 
-const ARTICLES = [
+const DEFAULT_ARTICLES = [
   {
     id: 'kopi_cakra_story',
     title: 'Kisah di Balik Kopi Cakra: Resep Legendaris Warkop Naik Kelas',
@@ -58,11 +59,14 @@ const ARTICLES = [
 ];
 
 export default function Articles() {
+  const { cmsData } = useCMSData();
+  const ARTICLES = cmsData?.articles?.length > 0 ? cmsData.articles : DEFAULT_ARTICLES;
+
   const [selectedArticle, setSelectedArticle] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 800);
+    const timer = setTimeout(() => setLoading(false), 400);
     return () => clearTimeout(timer);
   }, []);
 

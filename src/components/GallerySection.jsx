@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Sparkles, Eye, X, ChevronLeft, ChevronRight, MapPin, Camera } from 'lucide-react';
 import ScrollReveal from './ScrollReveal';
+import { useCMSData } from '../cms/cmsStore';
 
 import warkopPhotoImg from '../assets/warkop_photo.jpg';
 import berandaWarkopPhotoImg from '../assets/beranda_warkop_photo.jpg';
@@ -10,7 +11,7 @@ import heroLatteImg from '../assets/hero_latte_art.png';
 import eventSayembaraImg from '../assets/event_sayembara_kreator.jpg';
 import eventKaraokeImg from '../assets/event_lomba_karaoke.jpg';
 
-const GALLERY_ITEMS = [
+const DEFAULT_GALLERY_ITEMS = [
   {
     id: 1,
     title: 'Area Duduk & Mural Kopi Cakra',
@@ -70,11 +71,14 @@ const GALLERY_ITEMS = [
 ];
 
 export default function GallerySection() {
+  const { cmsData } = useCMSData();
+  const GALLERY_ITEMS = cmsData?.gallery?.length > 0 ? cmsData.gallery : DEFAULT_GALLERY_ITEMS;
+
   const [selectedCategory, setSelectedCategory] = useState('Semua');
   const [activeImageIndex, setActiveImageIndex] = useState(null);
   const [isFading, setIsFading] = useState(false);
 
-  const categories = ['Semua', 'Suasana Warkop', 'Signature Menu', 'Event & Komunitas'];
+  const categories = ['Semua', ...Array.from(new Set(GALLERY_ITEMS.map(g => g.category).filter(Boolean)))];
 
   const filteredItems = selectedCategory === 'Semua'
     ? GALLERY_ITEMS

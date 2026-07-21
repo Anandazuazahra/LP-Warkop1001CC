@@ -3,8 +3,11 @@ import { Coffee, Clock, MapPin, Users, Star, Calendar } from 'lucide-react';
 import warkopPhotoImg from '../assets/warkop_photo.jpg';
 import ScrollReveal from './ScrollReveal';
 import AnimatedCounter from './AnimatedCounter';
+import { useCMSData } from '../cms/cmsStore';
 
 export default function AboutWarkop() {
+  const { cmsData } = useCMSData();
+  const siteInfo = cmsData?.siteInfo || {};
   return (
     <div>
       <section className="section" style={{ paddingTop: '44px', paddingBottom: '60px' }}>
@@ -12,9 +15,9 @@ export default function AboutWarkop() {
           {/* Section Header - Directly Starts with Title */}
           <ScrollReveal variant="up">
             <div className="section-head" style={{ marginBottom: '32px' }}>
-              <h2 style={{ fontSize: 'clamp(2.2rem, 4vw, 3rem)' }}>Tentang Warkop 1001cc</h2>
+              <h2 style={{ fontSize: 'clamp(2.2rem, 4vw, 3rem)' }}>{siteInfo.aboutTitle || 'Tentang Warkop 1001cc'}</h2>
               <p style={{ maxWidth: '640px', margin: '10px auto 0' }}>
-                Rumah bagi setiap cerita — tempat bertemunya kehangatan kopi, inspirasi, dan kebersamaan 24 jam non-stop.
+                {siteInfo.aboutSubtitle || 'Rumah bagi setiap cerita — tempat bertemunya kehangatan kopi, inspirasi, dan kebersamaan 24 jam non-stop.'}
               </p>
             </div>
           </ScrollReveal>
@@ -37,7 +40,7 @@ export default function AboutWarkop() {
               {/* Left Column: Real Photo with Overlay Badge */}
               <div style={{ position: 'relative', minHeight: 'clamp(220px, 35vw, 360px)' }}>
                 <img 
-                  src={warkopPhotoImg} 
+                  src={siteInfo.aboutImage || warkopPhotoImg} 
                   alt="Area Duduk & Mural Kopi Cakra Warkop 1001cc" 
                   style={{
                     width: '100%',
@@ -64,7 +67,7 @@ export default function AboutWarkop() {
                 }}>
                   <MapPin size={16} color="var(--accent-copper)" style={{ flexShrink: 0 }} />
                   <span style={{ fontSize: '0.82rem', fontWeight: '700', color: 'var(--text-dark)' }}>
-                    Bojonggede - Kemang (Bomang), Kalisuren
+                    {siteInfo.address || 'Bojonggede - Kemang (Bomang), Kalisuren'}
                   </span>
                 </div>
               </div>
@@ -85,7 +88,7 @@ export default function AboutWarkop() {
                   letterSpacing: '0.08em',
                   marginBottom: '8px'
                 }}>
-                  Berdiri Sejak 20 September 2025
+                  Berdiri Sejak {siteInfo.establishedDate || '20 September 2025'}
                 </div>
 
                 <h3 style={{
@@ -104,7 +107,7 @@ export default function AboutWarkop() {
                   lineHeight: '1.7',
                   marginBottom: '14px'
                 }}>
-                  Warkop 1001cc resmi berdiri pada <strong>20 September 2025</strong>. Berawal dari kebiasaan tim yang sering berkumpul, berdiskusi, dan menikmati kopi di berbagai kafe, muncul sebuah ide sederhana: <em>mengapa tidak membangun tempat nongkrong sendiri?</em>
+                  {siteInfo.aboutStoryPart1 || 'Warkop 1001cc resmi berdiri pada 20 September 2025. Berawal dari kebiasaan tim yang sering berkumpul, berdiskusi, dan menikmati kopi di berbagai kafe, muncul sebuah ide sederhana: mengapa tidak membangun tempat nongkrong sendiri?'}
                 </p>
 
                 <p style={{
@@ -113,7 +116,7 @@ export default function AboutWarkop() {
                   lineHeight: '1.7',
                   marginBottom: '20px'
                 }}>
-                  Melihat masih terbatasnya tempat yang buka selama 24 jam, lahirlah <strong>Warkop 1001cc</strong> sebagai warkop yang nyaman, buka 24 jam, dan menjadi tempat berkumpul, bekerja, maupun bersantai kapan saja. Dengan menghadirkan kopi berkualitas dan suasana yang hangat, 1001cc hadir untuk menjadi rumah bagi setiap cerita dan pertemuan.
+                  {siteInfo.aboutStoryPart2 || 'Melihat masih terbatasnya tempat yang buka selama 24 jam, lahirlah Warkop 1001cc sebagai warkop yang nyaman, buka 24 jam, dan menjadi tempat berkumpul, bekerja, maupun bersantai kapan saja.'}
                 </p>
 
                 {/* Integrated Highlight Badges Row */}
